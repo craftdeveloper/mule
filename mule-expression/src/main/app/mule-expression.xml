@@ -7,5 +7,11 @@
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
     <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
-    <flow name="mule-expressionFlow"/>
+    <flow name="mule-expressionFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/expression" doc:name="HTTP"/>
+        <set-property propertyName="testpropert1" value="#[message.payload]" doc:name="Property"/>
+        <set-variable variableName="flowvar1" value="#[message.inboundProperties.'http.query.params'.testparam1]" doc:name="Variable"/>
+        <set-payload value="#[flowVars.flowvar1]" doc:name="Set Payload"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </flow>
 </mule>
